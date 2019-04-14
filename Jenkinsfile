@@ -32,7 +32,7 @@ node {
         try {
             //Create the service if it doesn't exist otherwise just update the image
             sh """
-                if [[ \$(docker service ls --filter name=${DOCKER_SERVICE_ID} --quiet | wc -l) -eq 0 ]]
+                if [ \$(docker service ls --filter name=${DOCKER_SERVICE_ID} --quiet | wc -l) -eq 0 ]
                   docker service create \
                     --replicas 1 \
                     --name ${DOCKER_SERVICE_ID} \
