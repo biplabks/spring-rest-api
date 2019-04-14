@@ -32,11 +32,14 @@ node {
         try {
             //Create the service if it doesn't exist otherwise just update the image
             sh """
-                if [ \$(docker service ls --filter name=${DOCKER_SERVICE_ID} --quiet | wc -l) -eq 0 ]
+                if [ \$(docker service ls --filter name=${DOCKER_SERVICE_ID} --quiet | wc -l) -eq 0 ]; then
                   docker service create \
                     --replicas 1 \
                     --name ${DOCKER_SERVICE_ID} \
-                    --env spring.profiles.active=prod \
+                    --publish 8080:8080 \
+                    --secret spring.datasource.url \
+                    --secret spring.datasource.username \
+                    --secret spring.datasource.password \
                     ${DOCKERHUB_REPO}:${DOCKER_IMAGE_VERSION}
                 else
                   docker service update \
